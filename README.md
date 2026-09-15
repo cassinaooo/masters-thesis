@@ -1,6 +1,6 @@
 # Quantile Forecasts Using Neural Networks for Retail Inventory Management with Fixed-Time Replenishment Intervals
 
-**📖 [Read the thesis online](Master's%20Thesis%20Text%20Preliminary%20Defense.md)**, or use the PDFs below.
+**📖 [Read the thesis online](thesis.md)**, or use the PDFs below.
 
 Master's thesis in Informatics, Graduate Program in Informatics (PPGI), Federal University of Amazonas (UFAM), Manaus, Brazil. This repository holds the text and slides of the **preliminary defense** (qualifying exam), August 2019.
 
