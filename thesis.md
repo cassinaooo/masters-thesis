@@ -65,40 +65,40 @@ Models adopted to optimize financial costs associated with stock-out and oversto
 
 To this end, we first define the cost $`C`$ we intend to minimize. This cost is associated with each purchase decision on a retailer operation and represents the weighted financial overstocking or stock-out penalties resulting from that purchase. In the following paragraphs, we provide a formal definition for $`C`$.
 
-We denote the demand for a given item as $`\boldsymbol{d}`$, a vector $`[d_1, d_2, d_3, ..., d_t, ..., d_{n-1}, d_n]`$ for $`t, n \in \mathbb{Z}^+`$ and $`d_t \in \mathbb{R}^+`$, representing a discrete time series. In our work, $`d_t`$ will usually refer to the sales observed at day $`t`$ – the terms demand and sales will be used interchangeably, given our focus on retail operations. Let
+We denote the demand for a given item as $`\boldsymbol{d}`$, a vector $`[d_1, d_2, d_3, ..., d_t, ..., d_{n-1}, d_n]`$ for $`t, n \in ℤ^+`$ and $`d_t \in ℝ^+`$, representing a discrete time series. In our work, $`d_t`$ will usually refer to the sales observed at day $`t`$ – the terms demand and sales will be used interchangeably, given our focus on retail operations. Let
 
 ``` math
-\boldsymbol{d}[i:j] = \sum_{t=i}^{j} d_t, \tag{1.1}
+\boldsymbol{d}[i:j] = \sum_{t=i}^{j} d_t, \qquad \text{(1.1)}
 ```
 
 ``` math
-Y = \sum_{t + \ell_t}^{t + r + \ell_{t + r}} d_i, \tag{1.2}
+Y = \sum_{t + \ell_t}^{t + r + \ell_{t + r}} d_i, \qquad \text{(1.2)}
 ```
 
 ``` math
-Y = \sum_{i=0}^{\ell} X_i, \tag{1.3}
+Y = \sum_{i=0}^{\ell} X_i, \qquad \text{(1.3)}
 ```
 
 be the cumulative demand over the interval $`[i, j]`$. The demand points $`d_t`$ and, consequently $`\boldsymbol{d}`$, are random variables with a probability density function (PDF) that we refer to as $`D`$.
 
 In retail operations, for the A segment items, fixed-time replenishment is usually adopted (Hugos 2018). Fixed-time replenishment is an inventory management policy that evaluates the available stock in a given point in time, and places orders periodically according to logistic restraints.
 
-Let $`r \in \mathbb{Z}^+`$ be the replenishment period of the analyzed item, and $`\ell_t`$ the time interval between the placement of an order at time $`t`$, and its fulfillment (lead time). We assume the lead times to follow a PDF, referred to as $`L`$.
+Let $`r \in ℤ^+`$ be the replenishment period of the analyzed item, and $`\ell_t`$ the time interval between the placement of an order at time $`t`$, and its fulfillment (lead time). We assume the lead times to follow a PDF, referred to as $`L`$.
 
 We denote
 ``` math
-y_t = \boldsymbol{d}[t + \ell_t : t + r + \ell_{t + r}], \tag{1.4}
+y_t = \boldsymbol{d}[t + \ell_t : t + r + \ell_{t + r}], \qquad \text{(1.4)}
 ```
 the cumulative demand from the arrival of the order placed at time $`t`$, $`t + \ell_t`$, to the arrival of the next order at $`t + r + \ell_{t + r}`$. Then, the optimal order quantity at $`t`$ will be:
 
 ``` math
-p^\ast_t = \max(y_t - i_t, 0), \tag{1.5}
+p^\ast_t = \max(y_t - i_t, 0), \qquad \text{(1.5)}
 ```
 
 which represents the current inventory level $`i_t`$ subtracted from the cumulative expected demand that needs to be met. This inventory control policy is called *order up-to policy* (Hugos 2018; Chen et al. 2000). Therefore, the optimal inventory level at time $`t`$ should be
 
 ``` math
-i^\ast_t =  \boldsymbol{d}[t: t + \ell_t], \tag{1.6}
+i^\ast_t =  \boldsymbol{d}[t: t + \ell_t], \qquad \text{(1.6)}
 ```
 
 the stock needed to meet the demand until the arrival of the order placed at $`t`$.
@@ -115,7 +115,7 @@ Since $`\ell_t`$ and $`d_t`$ are stochastic variables, we resort to estimates of
 
 The service level indicates the chance that all customers will have their demand met on a randomly chosen $`t`$. It is usually a performance measurement of inventory control models. Finally, a general model to estimate $`y_t`$ from the demand distribution, lead times distribution and replenishment interval can be denoted as
 ``` math
-\hat{y_t} = m(D, L, r, \tau; \theta), \tag{1.7}
+\hat{y_t} = m(D, L, r, \tau; \theta), \qquad \text{(1.7)}
 ```
 
 where $`\theta`$ is the set of free parameters of $`m`$.
@@ -127,7 +127,7 @@ C(y_t, \hat{y_t}) =
     \begin{cases}
         (y_t - \hat{y_t})\tau & \text{if } y_t\geq \hat{y_t}\\
         (\hat{y_t} - y_t)(1 - \tau) & \text{otherwise}.
-    \end{cases} \tag{1.8}
+    \end{cases} \qquad \text{(1.8)}
 ```
 
 Cost function $`C(y_t, \hat{y_t})`$ is colloquially called Pinball Loss Function (Koenker and Bassett Jr 1978; Biau and Patra 2011) and it is a particular discrete case of the more general Continuous Ranked Probability Score (Gneiting and Raftery 2007).
@@ -136,7 +136,7 @@ The first term of Equation 1.8 refers to the case in which the forecast fell sh
 
 Then, we consider
 ``` math
-\operatorname*{arg\,min}_{\theta} C(y_t, m(D, L, r, \tau; \theta)), \tag{1.9}
+\arg\min_{\theta} C(y_t, m(D, L, r, \tau; \theta)), \qquad \text{(1.9)}
 ```
 
 the particular configuration of $`\theta`$ that minimizes the financial costs associated with our estimates of optimal purchase decisions.
@@ -180,7 +180,7 @@ The holding cost, also called *carrying cost* is the total cost of holding inven
 The equilibrium between ordering and holding costs is well studied in the operations research literature, and its solution – under specific restraints – is called the Economic Order Quantity (EOQ) model (Hax and Candea 1984). Solving the EOQ equation
 
 ``` math
-p^\ast = \sqrt{\frac{2DK}{h}}, \tag{2.1}
+p^\ast = \sqrt{\frac{2DK}{h}}, \qquad \text{(2.1)}
 ```
 
 yields the optimal order quantity to balance ordering costs and holding costs. In Equation 2.1, $`D`$ is the expected demand over the time interval under analysis, $`K`$ is the cost per order and $`h`$ is the holding cost per unit.
@@ -208,7 +208,7 @@ The Binomial distribution is useful to represent sales in retail, because it des
 Now, assuming that the event of a given customer buying one unit of a specific item is a Bernoulli trial and there are infinitely many customers ($`n \to \infty`$), one can expect the probability of the demand on a given day to be accurately described by a Poisson distribution. Conversely,
 
 ``` math
-P(d_t) = e^{-\lambda}\frac{\lambda^{d_t}}{d_t!}, \tag{2.2}
+P(d_t) = e^{-\lambda}\frac{\lambda^{d_t}}{d_t!}, \qquad \text{(2.2)}
 ```
 
 where $`d_t`$ represents one particular value of daily demand, and $`\lambda`$ represents the expected value (or mean) of daily sales. On a Poisson distribution, $`\lambda = \mu = \sigma^2`$ (Kelly 1994).
@@ -228,7 +228,7 @@ When analyzing the A1 items on the ABC curve, short replenishment intervals ($`r
 Recal that the quantity $`y = \boldsymbol{d}[t:t+r + \ell_{t+r}]`$ is the cumulative demand until the next order arrival. Assuming $`\ell_t \sim \mathcal{N}(\mu_L, \sigma_L^2)`$, the resulting probability distribution of $`y`$,
 
 ``` math
-Y \sim \mathcal{N}((r + \mu_L)\mu_D, (r + \mu_L)\sigma_D^2 + \mu_D^2\sigma_L^2), \tag{2.3}
+Y \sim \mathcal{N}((r + \mu_L)\mu_D, (r + \mu_L)\sigma_D^2 + \mu_D^2\sigma_L^2), \qquad \text{(2.3)}
 ```
 
 describes the expected demand over that interval (Bagchi et al. 1986).
@@ -254,7 +254,7 @@ The service level can also be interpreted as a cost associated with inventory po
 Once again, let us assume $`\ell_t = 0`$ to deal only with irregularities in demand. Suppose our daily demand $`d_t`$ is a normally distributed random variable with $`\mu_D = 200`$ and $`\sigma^2_D = 100`$. Then, assuming we are working with a replenishment interval $`r = 7`$ and our current inventory is $`i_t = 0`$, the optimal order quantity for a service level of $`\tau = 0.9`$ will be $`p_t = \hat{y_t}^\tau`$, where
 
 ``` math
-\hat{y_t}^\tau = r \mu_D + r z_\tau \sigma_D. \tag{2.4}
+\hat{y_t}^\tau = r \mu_D + r z_\tau \sigma_D. \qquad \text{(2.4)}
 ```
 
 The quantity $`z_\tau`$ is the quantile value for $`\tau`$, when samples of $`d_t`$ are normally distributed. Quantiles for the gaussian distribution are easily computable. In this case,
@@ -271,7 +271,7 @@ and we can expect the cumulative values of $`d_t`$ over $`r`$ periods to be uppe
 Let us extend our example and consider the case for stochastic lead times. Suppose $`\ell_{t+r}`$ to be normally distributed with mean $`\mu_L = 3`$ and variance $`\sigma^2_L = 1`$. Then, considering Equation 2.3, we should order $`p_t = \hat{y_t}^\tau`$,
 
 ``` math
-\hat{y_t}^\tau = (r + \mu_L) \mu_D + (r + \mu_L) z_\tau \sigma_D + z_\tau \sigma_L\mu_D. \tag{2.5}
+\hat{y_t}^\tau = (r + \mu_L) \mu_D + (r + \mu_L) z_\tau \sigma_D + z_\tau \sigma_L\mu_D. \qquad \text{(2.5)}
 ```
 
 Numerically,
@@ -296,7 +296,7 @@ Based on the definition of service levels developed in Section 2.3 and how predi
 We will first reframe our quantile forecast as the solution for a minization problem. Let $`y`$ be a random sample on our variable $`Y`$. Then, the $`\hat{y}^\tau`$ quantile forecast, described in Section 2.3, can be viewed as a solution to the minization of the objetive
 
 ``` math
-C = \sum_{y \sim Y} \tau [(\hat{y}^\tau - y)]^+ + (1 - \tau)[(y - \hat{y}^\tau)]^+, \tag{2.6}
+C = \sum_{y \sim Y} \tau [(\hat{y}^\tau - y)]^+ + (1 - \tau)[(y - \hat{y}^\tau)]^+, \qquad \text{(2.6)}
 ```
 
 where $`[\: \cdot \:]^+`$ denote $`max(\:\cdot\:, 0)`$.
@@ -325,14 +325,14 @@ As a consequence, there is an increase or fall in the electrical potential of th
 
 **Figure 2.2:** Typical ANN architecture, with $`(L + 1)`$ layers, $`F`$ units in the input layer, and one unit in the output layer.
 
-The way the neurons are connected defines the architecture of an ANN. Figure 2.2 shows the typical architecture of an ANN, a *Multi-Layer Feedforward Network*. In this architecture, the neurons are organized in consecutive layers, and the connections between the units are weighted by real values called *weights*. The layer that receives the data is called the *input layer*, represented by a vector $`\boldsymbol{x} \in \mathbb{R}^F`$, our (*feature space*). The last layer is called the *output layer* and represents the end result of the network processing.
+The way the neurons are connected defines the architecture of an ANN. Figure 2.2 shows the typical architecture of an ANN, a *Multi-Layer Feedforward Network*. In this architecture, the neurons are organized in consecutive layers, and the connections between the units are weighted by real values called *weights*. The layer that receives the data is called the *input layer*, represented by a vector $`\boldsymbol{x} \in ℝ^F`$, our (*feature space*). The last layer is called the *output layer* and represents the end result of the network processing.
 
 In the figure 2.2, we use the particular case when the output of the last layer consists of one artificial neuron. That is the adequate architecture for single-variable regression problems, as is our case. Between the input and output layers, there may be a sequence of $`L`$ layers, known as *hidden layers*.
 
 Consider that any neuron – or node – receives a vector $`\boldsymbol{x}=[x_1, x_2, ..., x_N]`$ as input, and computes the following function, known as node pre-activation:
 
 ``` math
-a(\boldsymbol{x}) = b + \sum_{i}{w_ix_i} = \boldsymbol{b} + \boldsymbol{w}^T\boldsymbol{x}, \tag{2.7}
+a(\boldsymbol{x}) = b + \sum_{i}{w_ix_i} = \boldsymbol{b} + \boldsymbol{w}^T\boldsymbol{x}, \qquad \text{(2.7)}
 ```
 
 where $`a(\boldsymbol{x})`$ is a scalar and $`b`$ is the bias value, a $`\boldsymbol{x}`$-independent variable, represented in Figure 2.2 to units $`h_{0}^{l}`$, $`1 \leq l \leq L`$.
@@ -340,35 +340,35 @@ where $`a(\boldsymbol{x})`$ is a scalar and $`b`$ is the bias value, a $`\boldsy
 After computing $`a(\boldsymbol{x})`$, the neuron applies an non-linear transformation to the resulting value, using an activation function, $`g(\cdot)`$, as follows:
 
 ``` math
-y = h(\boldsymbol{x}) = g(a(\boldsymbol{x})) \tag{2.8}
+y = h(\boldsymbol{x}) = g(a(\boldsymbol{x})) \qquad \text{(2.8)}
 ```
 
 It is important to emphasize that different activation functions result in different behaviors of the neuron. The most commonly used functions are log sigmoid (Equation 2.9), hyperbolic sigmoid (Equation 2.10) and the rectifying function (Equation 2.11). These functions are usually used since they are all differentiable, making derivation of the update equation easier and also due to the fact that they are strictly increasing functions. In addition, an important feature of sigmoid functions is that they always keep output between 0 and 1.
 
 ``` math
-g(z) = \frac{1}{1+e^{-z}} \tag{2.9}
+g(z) = \frac{1}{1+e^{-z}} \qquad \text{(2.9)}
 ```
 ``` math
-g(z) = \frac{e^{z}-e^{-z}}{e^{z}+e^{-z}} \tag{2.10}
+g(z) = \frac{e^{z}-e^{-z}}{e^{z}+e^{-z}} \qquad \text{(2.10)}
 ```
 ``` math
-g(z) = max(0,z) \tag{2.11}
+g(z) = max(0,z) \qquad \text{(2.11)}
 ```
 
 Both the pre-activation function and the activation functions of a single neuron can be extended to networks that contain $`L`$ hidden layers, with several neurons in each layer. The equation 2.12 shows the pre-activation function considering a hidden layer, where the value of $`k`$ denotes the $`k`$-th intermediate layer, $`\boldsymbol{W}^{k}`$ is the matrix of weights of the connections between the neurons of layer $`k-1`$ and $`k`$, and the use of bold indicates that the Equation 2.12 is being applied to each neuron of this layer. The same is true for the equation 2.13 of the activation function.
 
 ``` math
-\boldsymbol{a}^{(k)}(\boldsymbol{x}) = \boldsymbol{b}^{(k)} + \boldsymbol{W}^{(k-1)}(\boldsymbol{x}) \tag{2.12}
+\boldsymbol{a}^{(k)}(\boldsymbol{x}) = \boldsymbol{b}^{(k)} + \boldsymbol{W}^{(k-1)}(\boldsymbol{x}) \qquad \text{(2.12)}
 ```
 
 ``` math
-\boldsymbol{h}^{(k)}(\boldsymbol{x}) = g(\boldsymbol{a}^{(k)}(\boldsymbol{x})) \tag{2.13}
+\boldsymbol{h}^{(k)}(\boldsymbol{x}) = g(\boldsymbol{a}^{(k)}(\boldsymbol{x})) \qquad \text{(2.13)}
 ```
 
-More generally, an artificial neural network for regression problems computes a function $`\hat{y} = f(\boldsymbol{x})`$ such that $`f(\boldsymbol{x}): \mathbb{R}^{F} \rightarrow \mathbb{R}`$, as shown in equation 2.14.
+More generally, an artificial neural network for regression problems computes a function $`\hat{y} = f(\boldsymbol{x})`$ such that $`f(\boldsymbol{x}): ℝ^{F} \rightarrow ℝ`$, as shown in equation 2.14.
 
 ``` math
-f(\boldsymbol{x}; \boldsymbol{W},\boldsymbol{b}) = \boldsymbol{h}^{L}(\boldsymbol{x}) = \boldsymbol{o}(\boldsymbol{a}^{L}(\boldsymbol{x})) \tag{2.14}
+f(\boldsymbol{x}; \boldsymbol{W},\boldsymbol{b}) = \boldsymbol{h}^{L}(\boldsymbol{x}) = \boldsymbol{o}(\boldsymbol{a}^{L}(\boldsymbol{x})) \qquad \text{(2.14)}
 ```
 
 #### 2.5.2 Neural Networks Training
@@ -388,7 +388,7 @@ Using $`\nabla C`$, and applying little adjustments to $`\theta`$, using a adjus
 The updating procedure for weights of the network is shown in equation 2.15:
 
 ``` math
-w^{(s+1)} = w^{(s)} - \eta \nabla C \tag{2.15}
+w^{(s+1)} = w^{(s)} - \eta \nabla C \qquad \text{(2.15)}
 ```
 
 where $`w`$ is a specific weight, a connection between a pair of nodes, and $`s`$ an arbitrary update step.
@@ -405,17 +405,17 @@ What follows is a step by step description of the algorithm, shown in its genera
 
 2.  Compute the error $`\delta_{i}^{(L+1)}`$ for the output units:
     ``` math
-    \delta_{i}^{(L+1)} = \frac{\partial C_{n}}{\partial y_{i}^{(L+1)}}f'(z_{i}^{(L+1)}) \tag{2.16}
+    \delta_{i}^{(L+1)} = \frac{\partial C_{n}}{\partial y_{i}^{(L+1)}}f'(z_{i}^{(L+1)}) \qquad \text{(2.16)}
     ```
 
 3.  Compute $`\delta_{i}^{(l)}`$ for all hidden layers $`l`$ using error backpropagation:
     ``` math
-    \delta_{i}^{(l)} = f'(z_{i}^{(l)})\sum_{k=1}^{m^{(i+1)}}{w_{i,k}^{(l+1)}\delta_{k}^{(l+1)}} \tag{2.17}
+    \delta_{i}^{(l)} = f'(z_{i}^{(l)})\sum_{k=1}^{m^{(i+1)}}{w_{i,k}^{(l+1)}\delta_{k}^{(l+1)}} \qquad \text{(2.17)}
     ```
 
 4.  Compute the derivatives:
     ``` math
-    \frac{\partial C_{n}}{\partial w_{j,i}^{(l)}} = \delta_{j}^{(l)}y_{i}^{(l-1)} \tag{2.18}
+    \frac{\partial C_{n}}{\partial w_{j,i}^{(l)}} = \delta_{j}^{(l)}y_{i}^{(l-1)} \qquad \text{(2.18)}
     ```
 
 5.  Update the parameters (Equation 2.15).
@@ -570,7 +570,7 @@ Suppose we have a feature with $`n`$ possible values. We attribute an index to e
     \begin{cases}
         1 & \text{if the feature value index is equal to $i$} \\
         0 & \text{otherwise}.
-    \end{cases} \tag{3.1}
+    \end{cases} \qquad \text{(3.1)}
 ```
 
 The one-hot vectors used will indicate the month and week of the year at the decision point described by a particular instance. This allows the model to correlate a specific time of the year with increases or decreases in sales.
@@ -580,7 +580,7 @@ Lastly, we also include a feature to indicate item promotion for the next $`r + 
 With the lagged series and input features, a typical training example for our model is composed of
 
 ``` math
-X = [d_{t-\Delta-1}, d_{t-\Delta}, d_{t-\Delta+1}, ..., d_{t-1}, \rho_f, \rho_t, \rho_p, s, \boldsymbol{h}^w, \boldsymbol{h}^m], \tag{3.2}
+X = [d_{t-\Delta-1}, d_{t-\Delta}, d_{t-\Delta+1}, ..., d_{t-1}, \rho_f, \rho_t, \rho_p, s, \boldsymbol{h}^w, \boldsymbol{h}^m], \qquad \text{(3.2)}
 ```
 
 where $`t`$ is the decision point in time, $`\rho_t`$, $`\rho_f`$, $`\rho_p`$ and $`s`$ represent – respectively – the current price, the future price trend, past price trend and the promotion indicator. The values $`d_{t-\Delta-1}, d_{t-\Delta}, d_{t-\Delta+1}, ..., d_{t-1}`$ are the z-scored logarithmic values of the past $`\Delta`$ days. We include the one-hot vectors for week of year and month of year as $`\boldsymbol{h}^w`$ and $`\boldsymbol{h}^m`$.
