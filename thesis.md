@@ -65,10 +65,10 @@ Models adopted to optimize financial costs associated with stock-out and oversto
 
 To this end, we first define the cost $`C`$ we intend to minimize. This cost is associated with each purchase decision on a retailer operation and represents the weighted financial overstocking or stock-out penalties resulting from that purchase. In the following paragraphs, we provide a formal definition for $`C`$.
 
-We denote the demand for a given item as $`\boldsymbol{d}`$, a vector $`[d_1, d_2, d_3, ..., d_t, ..., d_{n-1}, d_n]`$ for $`t, n \in ℤ^+`$ and $`d_t \in ℝ^+`$, representing a discrete time series. In our work, $`d_t`$ will usually refer to the sales observed at day $`t`$ – the terms demand and sales will be used interchangeably, given our focus on retail operations. Let
+We denote the demand for a given item as $`𝒅`$, a vector $`[d_1, d_2, d_3, ..., d_t, ..., d_{n-1}, d_n]`$ for $`t, n \in ℤ^+`$ and $`d_t \in ℝ^+`$, representing a discrete time series. In our work, $`d_t`$ will usually refer to the sales observed at day $`t`$ – the terms demand and sales will be used interchangeably, given our focus on retail operations. Let
 
 ``` math
-\boldsymbol{d}[i:j] = \sum_{t=i}^{j} d_t, \qquad \text{(1.1)}
+𝒅[i:j] = \sum_{t=i}^{j} d_t, \qquad \text{(1.1)}
 ```
 
 ``` math
@@ -79,7 +79,7 @@ Y = \sum_{t + \ell_t}^{t + r + \ell_{t + r}} d_i, \qquad \text{(1.2)}
 Y = \sum_{i=0}^{\ell} X_i, \qquad \text{(1.3)}
 ```
 
-be the cumulative demand over the interval $`[i, j]`$. The demand points $`d_t`$ and, consequently $`\boldsymbol{d}`$, are random variables with a probability density function (PDF) that we refer to as $`D`$.
+be the cumulative demand over the interval $`[i, j]`$. The demand points $`d_t`$ and, consequently $`𝒅`$, are random variables with a probability density function (PDF) that we refer to as $`D`$.
 
 In retail operations, for the A segment items, fixed-time replenishment is usually adopted (Hugos 2018). Fixed-time replenishment is an inventory management policy that evaluates the available stock in a given point in time, and places orders periodically according to logistic restraints.
 
@@ -87,7 +87,7 @@ Let $`r \in ℤ^+`$ be the replenishment period of the analyzed item, and $`\ell
 
 We denote
 ``` math
-y_t = \boldsymbol{d}[t + \ell_t : t + r + \ell_{t + r}], \qquad \text{(1.4)}
+y_t = 𝒅[t + \ell_t : t + r + \ell_{t + r}], \qquad \text{(1.4)}
 ```
 the cumulative demand from the arrival of the order placed at time $`t`$, $`t + \ell_t`$, to the arrival of the next order at $`t + r + \ell_{t + r}`$. Then, the optimal order quantity at $`t`$ will be:
 
@@ -98,7 +98,7 @@ p^\ast_t = \max(y_t - i_t, 0), \qquad \text{(1.5)}
 which represents the current inventory level $`i_t`$ subtracted from the cumulative expected demand that needs to be met. This inventory control policy is called *order up-to policy* (Hugos 2018; Chen et al. 2000). Therefore, the optimal inventory level at time $`t`$ should be
 
 ``` math
-i^\ast_t =  \boldsymbol{d}[t: t + \ell_t], \qquad \text{(1.6)}
+i^\ast_t =  𝒅[t: t + \ell_t], \qquad \text{(1.6)}
 ```
 
 the stock needed to meet the demand until the arrival of the order placed at $`t`$.
@@ -111,26 +111,26 @@ Figure 1.1 depicts an optimal inventory series with two consecutive decision po
 
 **Figure 1.1:** Sample of optimal inventory series points, $`i^\ast_t`$.
 
-Since $`\ell_t`$ and $`d_t`$ are stochastic variables, we resort to estimates of $`y_t`$, denoted by $`\hat{y_t}`$. Our goal is to produce a model that estimate $`y_t`$ taking into account the uncertainty in the above quantities. We introduce the concept of *service level* to deal with uncertainty (Hugos 2018). It is defined as the percentile $`\tau`$ representing the probability of $`\text{P}(i_t > d_t)`$.
+Since $`\ell_t`$ and $`d_t`$ are stochastic variables, we resort to estimates of $`y_t`$, denoted by $`\hat{y}_t`$. Our goal is to produce a model that estimate $`y_t`$ taking into account the uncertainty in the above quantities. We introduce the concept of *service level* to deal with uncertainty (Hugos 2018). It is defined as the percentile $`\tau`$ representing the probability of $`\text{P}(i_t > d_t)`$.
 
 The service level indicates the chance that all customers will have their demand met on a randomly chosen $`t`$. It is usually a performance measurement of inventory control models. Finally, a general model to estimate $`y_t`$ from the demand distribution, lead times distribution and replenishment interval can be denoted as
 ``` math
-\hat{y_t} = m(D, L, r, \tau; \theta), \qquad \text{(1.7)}
+\hat{y}_t = m(D, L, r, \tau; \theta), \qquad \text{(1.7)}
 ```
 
 where $`\theta`$ is the set of free parameters of $`m`$.
 
-As we seek to reduce financial costs associated with stock-outs and overstocking due to purchase orders derived from $`\hat{y_t}`$, we should then try to minimize the distance between $`y_t`$ and $`\hat{y_t}`$. As we mentioned earlier, the holding costs *versus* the stock-out costs are usually asymmetrical, and proportional to $`\tau`$. Therefore, a usefull model for inventory management with periodic revision in retail operations should be evaluated using the objective function
+As we seek to reduce financial costs associated with stock-outs and overstocking due to purchase orders derived from $`\hat{y}_t`$, we should then try to minimize the distance between $`y_t`$ and $`\hat{y}_t`$. As we mentioned earlier, the holding costs *versus* the stock-out costs are usually asymmetrical, and proportional to $`\tau`$. Therefore, a usefull model for inventory management with periodic revision in retail operations should be evaluated using the objective function
 
 ``` math
-C(y_t, \hat{y_t}) = 
+C(y_t, \hat{y}_t) = 
     \begin{cases}
-        (y_t - \hat{y_t})\tau & \text{if } y_t\geq \hat{y_t}\\
-        (\hat{y_t} - y_t)(1 - \tau) & \text{otherwise}.
+        (y_t - \hat{y}_t)\tau & \text{if } y_t\geq \hat{y}_t\\
+        (\hat{y}_t - y_t)(1 - \tau) & \text{otherwise}.
     \end{cases} \qquad \text{(1.8)}
 ```
 
-Cost function $`C(y_t, \hat{y_t})`$ is colloquially called Pinball Loss Function (Koenker and Bassett Jr 1978; Biau and Patra 2011) and it is a particular discrete case of the more general Continuous Ranked Probability Score (Gneiting and Raftery 2007).
+Cost function $`C(y_t, \hat{y}_t)`$ is colloquially called Pinball Loss Function (Koenker and Bassett Jr 1978; Biau and Patra 2011) and it is a particular discrete case of the more general Continuous Ranked Probability Score (Gneiting and Raftery 2007).
 
 The first term of Equation 1.8 refers to the case in which the forecast fell short of the realized demand, caused a out-of-stock event, and should only happen with probability $`(1 - \tau)`$. Its second term treats the case in which the forecasts overshoots and is expected to happen with probability $`\tau`$.
 
@@ -195,7 +195,7 @@ To simplify our models, we will ignore the upper echelons (Graves 1996) and assu
 
 ### 2.2 Uncertainties in demand and lead times
 
-Under the EOQ assumptions, the lead times and customer demand are constant over time. To simplify our equations for the time being, let $`\ell_t = 0`$ be the time it takes to fulfill an order. The retailer manager will place an order of optimal quantity ($`p^\ast`$) at time $`t`$, wait for $`r`$ days and repeat the process, since the cumulative demand over the interval is equal to the optimal order quantity ($`\boldsymbol{d}[t:t+r] = p^\ast`$), the retailer have zero inventory at the decision point ($`i_t = 0`$), and orders are fulfilled instantly. With these restraints, the inventory series over time produces the well known sawtooth pattern seen in Figure 2.1.
+Under the EOQ assumptions, the lead times and customer demand are constant over time. To simplify our equations for the time being, let $`\ell_t = 0`$ be the time it takes to fulfill an order. The retailer manager will place an order of optimal quantity ($`p^\ast`$) at time $`t`$, wait for $`r`$ days and repeat the process, since the cumulative demand over the interval is equal to the optimal order quantity ($`𝒅[t:t+r] = p^\ast`$), the retailer have zero inventory at the decision point ($`i_t = 0`$), and orders are fulfilled instantly. With these restraints, the inventory series over time produces the well known sawtooth pattern seen in Figure 2.1.
 
 <p align="center"><img src="figures/optimal_constant_demand.png" width="760"></p>
 
@@ -213,11 +213,11 @@ P(d_t) = e^{-\lambda}\frac{\lambda^{d_t}}{d_t!}, \qquad \text{(2.2)}
 
 where $`d_t`$ represents one particular value of daily demand, and $`\lambda`$ represents the expected value (or mean) of daily sales. On a Poisson distribution, $`\lambda = \mu = \sigma^2`$ (Kelly 1994).
 
-Recall that the quantity that we are interested in is $`\boldsymbol{d}[t:t+r]`$, the cumulative demand over the next replenishment interval – assuming $`\ell_{t+r} = 0`$. Then, if we take $`D`$ to be a Poisson distribution with mean $`\mu_D = \lambda`$ and variance $`\sigma_D^2 = \lambda`$, $`\boldsymbol{d}[t:t+r]`$ is a Discrete Compound Poisson distribution, with $`\mu = r\lambda`$ and $`\sigma^2 = r(\lambda^2 + \lambda)`$ (Kelly 1994).
+Recall that the quantity that we are interested in is $`𝒅[t:t+r]`$, the cumulative demand over the next replenishment interval – assuming $`\ell_{t+r} = 0`$. Then, if we take $`D`$ to be a Poisson distribution with mean $`\mu_D = \lambda`$ and variance $`\sigma_D^2 = \lambda`$, $`𝒅[t:t+r]`$ is a Discrete Compound Poisson distribution, with $`\mu = r\lambda`$ and $`\sigma^2 = r(\lambda^2 + \lambda)`$ (Kelly 1994).
 
-In our case, as in the literature (Peterson and Silver 1979; Ramaekers et al. 2008; Agrawal and Smith 1996; Tyworth and O’Neill 1997), it is useful to assume $`D`$ to be normally distributed for large enough values of $`\lambda`$. As stated in our Problem Definition Section 1.1, we are interested in the A1 items in the ABC curve, where demand is large enough for this assumption to be made with confidence. The normality assumption for sales allow us to consider $`D`$ to be $`\mathcal{N}(\mu_D,\sigma^2_D)`$, effectively decoupling the mean and variance of the distribution.
+In our case, as in the literature (Peterson and Silver 1979; Ramaekers et al. 2008; Agrawal and Smith 1996; Tyworth and O’Neill 1997), it is useful to assume $`D`$ to be normally distributed for large enough values of $`\lambda`$. As stated in our Problem Definition Section 1.1, we are interested in the A1 items in the ABC curve, where demand is large enough for this assumption to be made with confidence. The normality assumption for sales allow us to consider $`D`$ to be $`𝒩(\mu_D,\sigma^2_D)`$, effectively decoupling the mean and variance of the distribution.
 
-Another approach is to consider $`D`$ to be a Gamma distribution (Burgin 1975). Although the Gamma distribution has properties that are significant for slower moving items, such as non-negativity and assimetricity, it is not so relevant in this work, given that the Gaussian is more tractable most of the time in our context. For Gaussian distribution, parameter estimation and composition with other distributions is relatively straightforward (Ramaekers et al. 2008; Agrawal and Smith 1996). The compound probability distribution $`\boldsymbol{d}[t:t+r]`$, considering $`d_t`$ to follow a Gaussian distribution, is described by $`\mathcal{N}(r\mu_D, r\sigma_D^2)`$ (Kelly 1994). On discrete cases, compound distributions are also called convolutions.
+Another approach is to consider $`D`$ to be a Gamma distribution (Burgin 1975). Although the Gamma distribution has properties that are significant for slower moving items, such as non-negativity and assimetricity, it is not so relevant in this work, given that the Gaussian is more tractable most of the time in our context. For Gaussian distribution, parameter estimation and composition with other distributions is relatively straightforward (Ramaekers et al. 2008; Agrawal and Smith 1996). The compound probability distribution $`𝒅[t:t+r]`$, considering $`d_t`$ to follow a Gaussian distribution, is described by $`𝒩(r\mu_D, r\sigma_D^2)`$ (Kelly 1994). On discrete cases, compound distributions are also called convolutions.
 
 Now let us consider the lead times distribution $`L`$ and its impact on our inventory control model. As explained in our Problem Definition 1.1, orders are not fulfilled in constant time on real world retail shops. Lead times are stochastic and, as with demand, its causes are non-observable variables. The lead times will vary depending on factors such as logistic constraints, production constraints, unforeseable events – natural disasters, systemic failures, supply chain disruptions, supply chain attacks – among others (Hugos 2018).
 
@@ -225,10 +225,10 @@ In order to properly control inventory levels, one needs to take into account th
 
 When analyzing the A1 items on the ABC curve, short replenishment intervals ($`r`$) are practiced to lower the holding costs and business working capital requirements. For instance, in our case study (cf. Section 3.1), the retailer adopts values for $`r \leq 15`$ for these items. This choice of $`r`$ yields large samples of lead times.
 
-Recal that the quantity $`y = \boldsymbol{d}[t:t+r + \ell_{t+r}]`$ is the cumulative demand until the next order arrival. Assuming $`\ell_t \sim \mathcal{N}(\mu_L, \sigma_L^2)`$, the resulting probability distribution of $`y`$,
+Recal that the quantity $`y = 𝒅[t:t+r + \ell_{t+r}]`$ is the cumulative demand until the next order arrival. Assuming $`\ell_t \sim 𝒩(\mu_L, \sigma_L^2)`$, the resulting probability distribution of $`y`$,
 
 ``` math
-Y \sim \mathcal{N}((r + \mu_L)\mu_D, (r + \mu_L)\sigma_D^2 + \mu_D^2\sigma_L^2), \qquad \text{(2.3)}
+Y \sim 𝒩((r + \mu_L)\mu_D, (r + \mu_L)\sigma_D^2 + \mu_D^2\sigma_L^2), \qquad \text{(2.3)}
 ```
 
 describes the expected demand over that interval (Bagchi et al. 1986).
@@ -251,41 +251,41 @@ In this way, the service level complement ($`1-\tau`$) will represent the probab
 
 The service level can also be interpreted as a cost associated with inventory policies. The ratio of $`\tau/(1-\tau)`$ should tell us approximately what is the relative cost of an stock-out event versus overstocking. A ratio of 1 indicates that the cost of maintaining inventory is balanced with the cost of losing a sale. A ratio of 5, for example, indicates that for the item under consideration, a stock-out is five times more burdensome to the retailer than to have 5 surplus items in stock.
 
-Once again, let us assume $`\ell_t = 0`$ to deal only with irregularities in demand. Suppose our daily demand $`d_t`$ is a normally distributed random variable with $`\mu_D = 200`$ and $`\sigma^2_D = 100`$. Then, assuming we are working with a replenishment interval $`r = 7`$ and our current inventory is $`i_t = 0`$, the optimal order quantity for a service level of $`\tau = 0.9`$ will be $`p_t = \hat{y_t}^\tau`$, where
+Once again, let us assume $`\ell_t = 0`$ to deal only with irregularities in demand. Suppose our daily demand $`d_t`$ is a normally distributed random variable with $`\mu_D = 200`$ and $`\sigma^2_D = 100`$. Then, assuming we are working with a replenishment interval $`r = 7`$ and our current inventory is $`i_t = 0`$, the optimal order quantity for a service level of $`\tau = 0.9`$ will be $`p_t = \hat{y}_t^\tau`$, where
 
 ``` math
-\hat{y_t}^\tau = r \mu_D + r z_\tau \sigma_D. \qquad \text{(2.4)}
+\hat{y}_t^\tau = r \mu_D + r z_\tau \sigma_D. \qquad \text{(2.4)}
 ```
 
 The quantity $`z_\tau`$ is the quantile value for $`\tau`$, when samples of $`d_t`$ are normally distributed. Quantiles for the gaussian distribution are easily computable. In this case,
 
 ``` math
 \begin{aligned}
-    \hat{y_t}^\tau & = 7 * 200 + 7 * 1.64 * 10 \\
+    \hat{y}_t^\tau & = 7 * 200 + 7 * 1.64 * 10 \\
            & = 1514.8  \; ,
 \end{aligned}
 ```
 
-and we can expect the cumulative values of $`d_t`$ over $`r`$ periods to be upper bounded by $`\hat{y_t}`$ with $`\tau`$ probability (Kelly 1994). The cycle inventory is $`r \mu_D = 1400`$ and the safety stock to cover variability in demand becomes $`r z_\tau \sigma_D = 114.8`$.
+and we can expect the cumulative values of $`d_t`$ over $`r`$ periods to be upper bounded by $`\hat{y}_t`$ with $`\tau`$ probability (Kelly 1994). The cycle inventory is $`r \mu_D = 1400`$ and the safety stock to cover variability in demand becomes $`r z_\tau \sigma_D = 114.8`$.
 
-Let us extend our example and consider the case for stochastic lead times. Suppose $`\ell_{t+r}`$ to be normally distributed with mean $`\mu_L = 3`$ and variance $`\sigma^2_L = 1`$. Then, considering Equation 2.3, we should order $`p_t = \hat{y_t}^\tau`$,
+Let us extend our example and consider the case for stochastic lead times. Suppose $`\ell_{t+r}`$ to be normally distributed with mean $`\mu_L = 3`$ and variance $`\sigma^2_L = 1`$. Then, considering Equation 2.3, we should order $`p_t = \hat{y}_t^\tau`$,
 
 ``` math
-\hat{y_t}^\tau = (r + \mu_L) \mu_D + (r + \mu_L) z_\tau \sigma_D + z_\tau \sigma_L\mu_D. \qquad \text{(2.5)}
+\hat{y}_t^\tau = (r + \mu_L) \mu_D + (r + \mu_L) z_\tau \sigma_D + z_\tau \sigma_L\mu_D. \qquad \text{(2.5)}
 ```
 
 Numerically,
 
 ``` math
 \begin{aligned}
-    \hat{y_t}^\tau & = (7 + 3) * 200 + (7 + 3) * 1.64 * 10  + 1 * 1.64 * 200 \\
+    \hat{y}_t^\tau & = (7 + 3) * 200 + (7 + 3) * 1.64 * 10  + 1 * 1.64 * 200 \\
            & = 2492  \; .
 \end{aligned}
 ```
 
 In this example, the cycle inventory now becomes $`(r + \mu_L) \mu_D = 2000`$, while the safety stock now has two terms, $`(r + \mu_L) z_\tau \sigma_D = 164`$ to account for irregularities in the demand over the new interval $`r + \mu_L`$, and $`z_\tau \sigma_L\mu_D = 328`$ to ensure against the stochastic lead time. Note that, with an increase in demand variability $`\sigma^2_D`$, lead times variability $`\sigma^2_L`$, or desired service level $`\tau`$, this model will adjust by buying more safety stock.
 
-In this framing, $`\hat{y_t}^\tau`$ is called a $`\tau`$ quantile forecast for the probability distribution $`Y`$ described in Section 2.2. An estimator for $`Y`$ with the property that the observed values of $`y`$ should fall within the range $`[0, \hat{y_t}^\tau]`$ with probability $`\tau`$.
+In this framing, $`\hat{y}_t^\tau`$ is called a $`\tau`$ quantile forecast for the probability distribution $`Y`$ described in Section 2.2. An estimator for $`Y`$ with the property that the observed values of $`y`$ should fall within the range $`[0, \hat{y}_t^\tau]`$ with probability $`\tau`$.
 
 This is a form of inventory control model that considers variability on lead times and demand. It is grounded on the premises of Gaussian and stationary distributions, both for $`D`$ and $`L`$. In the next sections, we show how one can use more sofisticated estimators for $`Y`$ that will not depend on neither the stationary assumption nor the normality assumption.
 
@@ -325,22 +325,22 @@ As a consequence, there is an increase or fall in the electrical potential of th
 
 **Figure 2.2:** Typical ANN architecture, with $`(L + 1)`$ layers, $`F`$ units in the input layer, and one unit in the output layer.
 
-The way the neurons are connected defines the architecture of an ANN. Figure 2.2 shows the typical architecture of an ANN, a *Multi-Layer Feedforward Network*. In this architecture, the neurons are organized in consecutive layers, and the connections between the units are weighted by real values called *weights*. The layer that receives the data is called the *input layer*, represented by a vector $`\boldsymbol{x} \in ℝ^F`$, our (*feature space*). The last layer is called the *output layer* and represents the end result of the network processing.
+The way the neurons are connected defines the architecture of an ANN. Figure 2.2 shows the typical architecture of an ANN, a *Multi-Layer Feedforward Network*. In this architecture, the neurons are organized in consecutive layers, and the connections between the units are weighted by real values called *weights*. The layer that receives the data is called the *input layer*, represented by a vector $`𝒙 \in ℝ^F`$, our (*feature space*). The last layer is called the *output layer* and represents the end result of the network processing.
 
 In the figure 2.2, we use the particular case when the output of the last layer consists of one artificial neuron. That is the adequate architecture for single-variable regression problems, as is our case. Between the input and output layers, there may be a sequence of $`L`$ layers, known as *hidden layers*.
 
-Consider that any neuron – or node – receives a vector $`\boldsymbol{x}=[x_1, x_2, ..., x_N]`$ as input, and computes the following function, known as node pre-activation:
+Consider that any neuron – or node – receives a vector $`𝒙=[x_1, x_2, ..., x_N]`$ as input, and computes the following function, known as node pre-activation:
 
 ``` math
-a(\boldsymbol{x}) = b + \sum_{i}{w_ix_i} = \boldsymbol{b} + \boldsymbol{w}^T\boldsymbol{x}, \qquad \text{(2.7)}
+a(𝒙) = b + \sum_{i}{w_ix_i} = 𝒃 + 𝒘^T𝒙, \qquad \text{(2.7)}
 ```
 
-where $`a(\boldsymbol{x})`$ is a scalar and $`b`$ is the bias value, a $`\boldsymbol{x}`$-independent variable, represented in Figure 2.2 to units $`h_{0}^{l}`$, $`1 \leq l \leq L`$.
+where $`a(𝒙)`$ is a scalar and $`b`$ is the bias value, a $`𝒙`$-independent variable, represented in Figure 2.2 to units $`h_{0}^{l}`$, $`1 \leq l \leq L`$.
 
-After computing $`a(\boldsymbol{x})`$, the neuron applies an non-linear transformation to the resulting value, using an activation function, $`g(\cdot)`$, as follows:
+After computing $`a(𝒙)`$, the neuron applies an non-linear transformation to the resulting value, using an activation function, $`g(\cdot)`$, as follows:
 
 ``` math
-y = h(\boldsymbol{x}) = g(a(\boldsymbol{x})) \qquad \text{(2.8)}
+y = h(𝒙) = g(a(𝒙)) \qquad \text{(2.8)}
 ```
 
 It is important to emphasize that different activation functions result in different behaviors of the neuron. The most commonly used functions are log sigmoid (Equation 2.9), hyperbolic sigmoid (Equation 2.10) and the rectifying function (Equation 2.11). These functions are usually used since they are all differentiable, making derivation of the update equation easier and also due to the fact that they are strictly increasing functions. In addition, an important feature of sigmoid functions is that they always keep output between 0 and 1.
@@ -355,27 +355,27 @@ g(z) = \frac{e^{z}-e^{-z}}{e^{z}+e^{-z}} \qquad \text{(2.10)}
 g(z) = max(0,z) \qquad \text{(2.11)}
 ```
 
-Both the pre-activation function and the activation functions of a single neuron can be extended to networks that contain $`L`$ hidden layers, with several neurons in each layer. The equation 2.12 shows the pre-activation function considering a hidden layer, where the value of $`k`$ denotes the $`k`$-th intermediate layer, $`\boldsymbol{W}^{k}`$ is the matrix of weights of the connections between the neurons of layer $`k-1`$ and $`k`$, and the use of bold indicates that the Equation 2.12 is being applied to each neuron of this layer. The same is true for the equation 2.13 of the activation function.
+Both the pre-activation function and the activation functions of a single neuron can be extended to networks that contain $`L`$ hidden layers, with several neurons in each layer. The equation 2.12 shows the pre-activation function considering a hidden layer, where the value of $`k`$ denotes the $`k`$-th intermediate layer, $`𝑾^{k}`$ is the matrix of weights of the connections between the neurons of layer $`k-1`$ and $`k`$, and the use of bold indicates that the Equation 2.12 is being applied to each neuron of this layer. The same is true for the equation 2.13 of the activation function.
 
 ``` math
-\boldsymbol{a}^{(k)}(\boldsymbol{x}) = \boldsymbol{b}^{(k)} + \boldsymbol{W}^{(k-1)}(\boldsymbol{x}) \qquad \text{(2.12)}
+𝒂^{(k)}(𝒙) = 𝒃^{(k)} + 𝑾^{(k-1)}(𝒙) \qquad \text{(2.12)}
 ```
 
 ``` math
-\boldsymbol{h}^{(k)}(\boldsymbol{x}) = g(\boldsymbol{a}^{(k)}(\boldsymbol{x})) \qquad \text{(2.13)}
+𝒉^{(k)}(𝒙) = g(𝒂^{(k)}(𝒙)) \qquad \text{(2.13)}
 ```
 
-More generally, an artificial neural network for regression problems computes a function $`\hat{y} = f(\boldsymbol{x})`$ such that $`f(\boldsymbol{x}): ℝ^{F} \rightarrow ℝ`$, as shown in equation 2.14.
+More generally, an artificial neural network for regression problems computes a function $`\hat{y} = f(𝒙)`$ such that $`f(𝒙): ℝ^{F} \rightarrow ℝ`$, as shown in equation 2.14.
 
 ``` math
-f(\boldsymbol{x}; \boldsymbol{W},\boldsymbol{b}) = \boldsymbol{h}^{L}(\boldsymbol{x}) = \boldsymbol{o}(\boldsymbol{a}^{L}(\boldsymbol{x})) \qquad \text{(2.14)}
+f(𝒙; 𝑾,𝒃) = 𝒉^{L}(𝒙) = 𝒐(𝒂^{L}(𝒙)) \qquad \text{(2.14)}
 ```
 
 #### 2.5.2 Neural Networks Training
 
-To work properly, ANNs will optimize its parameters $`\boldsymbol{W}`$ and $`\boldsymbol{b}`$ – henceforth denoted by $`\theta`$ – during a process called training, in which an algorithm described in Section 2.5.2 will find the parameters that minimize a given cost (or error) function over multiple *training examples*. This is done by selecting multiple pairs $`(\boldsymbol{x}_t, y_t)`$, where $`\boldsymbol{x}_t`$ is the feature vector and $`y_t`$ is the expected output value for that $`\boldsymbol{x}_t`$. We call a single $`(\boldsymbol{x}_t, y_t)`$ pair a *training example*.
+To work properly, ANNs will optimize its parameters $`𝑾`$ and $`𝒃`$ – henceforth denoted by $`\theta`$ – during a process called training, in which an algorithm described in Section 2.5.2 will find the parameters that minimize a given cost (or error) function over multiple *training examples*. This is done by selecting multiple pairs $`(𝒙_t, y_t)`$, where $`𝒙_t`$ is the feature vector and $`y_t`$ is the expected output value for that $`𝒙_t`$. We call a single $`(𝒙_t, y_t)`$ pair a *training example*.
 
-During training, every $`\boldsymbol{x}_t`$ in the training set will be fed to the network, resulting in a estimate $`\hat{y}_t = f(\boldsymbol{x}_t; \theta)`$. Then, these outputs will be compared to the expected outputs using a cost function $`C(y_t, \hat{y_t})`$, that will result in a scalar error value. The parameters of the network should be adjusted to reduce the training error, while also enabling the model to generalize to unseen examples.
+During training, every $`𝒙_t`$ in the training set will be fed to the network, resulting in a estimate $`\hat{y}_t = f(𝒙_t; \theta)`$. Then, these outputs will be compared to the expected outputs using a cost function $`C(y_t, \hat{y}_t)`$, that will result in a scalar error value. The parameters of the network should be adjusted to reduce the training error, while also enabling the model to generalize to unseen examples.
 
 ##### Gradient Descent
 
@@ -401,7 +401,7 @@ To efficiently evaluate $`\nabla C`$ for all network parameters, we use the algo
 
 What follows is a step by step description of the algorithm, shown in its general form, for multiple output nodes:
 
-1.  Feed $`\boldsymbol{x}_t`$ to the network, computing the output for every node at all layers of the network, before (Equation 2.7), and after (Equation 2.8) the activation function.
+1.  Feed $`𝒙_t`$ to the network, computing the output for every node at all layers of the network, before (Equation 2.7), and after (Equation 2.8) the activation function.
 
 2.  Compute the error $`\delta_{i}^{(L+1)}`$ for the output units:
     ``` math
@@ -563,12 +563,12 @@ We start with three variables related to pricing, i.e, the z-score of the price 
 
 We also inject seasonality variables into our training and evaluation examples. Specifically, we use categorical variables encoded as one-hot vectors. One-hot vectors (or dummy variables) are used to input categorical information in regression techniques (Goodfellow et al. 2016).
 
-Suppose we have a feature with $`n`$ possible values. We attribute an index to each possible value of the feature. Then, we construct a vector $`\boldsymbol{h}`$, with $`|\boldsymbol{h}| = n`$ and values
+Suppose we have a feature with $`n`$ possible values. We attribute an index to each possible value of the feature. Then, we construct a vector $`𝒉`$, with $`|𝒉| = n`$ and values
 
 ``` math
-\boldsymbol{h}_i = 
+𝒉_i = 
     \begin{cases}
-        1 & \text{if the feature value index is equal to $i$} \\
+        1 & \text{if the feature value index is equal to } i \\
         0 & \text{otherwise}.
     \end{cases} \qquad \text{(3.1)}
 ```
@@ -580,10 +580,10 @@ Lastly, we also include a feature to indicate item promotion for the next $`r + 
 With the lagged series and input features, a typical training example for our model is composed of
 
 ``` math
-X = [d_{t-\Delta-1}, d_{t-\Delta}, d_{t-\Delta+1}, ..., d_{t-1}, \rho_f, \rho_t, \rho_p, s, \boldsymbol{h}^w, \boldsymbol{h}^m], \qquad \text{(3.2)}
+X = [d_{t-\Delta-1}, d_{t-\Delta}, d_{t-\Delta+1}, ..., d_{t-1}, \rho_f, \rho_t, \rho_p, s, 𝒉^w, 𝒉^m], \qquad \text{(3.2)}
 ```
 
-where $`t`$ is the decision point in time, $`\rho_t`$, $`\rho_f`$, $`\rho_p`$ and $`s`$ represent – respectively – the current price, the future price trend, past price trend and the promotion indicator. The values $`d_{t-\Delta-1}, d_{t-\Delta}, d_{t-\Delta+1}, ..., d_{t-1}`$ are the z-scored logarithmic values of the past $`\Delta`$ days. We include the one-hot vectors for week of year and month of year as $`\boldsymbol{h}^w`$ and $`\boldsymbol{h}^m`$.
+where $`t`$ is the decision point in time, $`\rho_t`$, $`\rho_f`$, $`\rho_p`$ and $`s`$ represent – respectively – the current price, the future price trend, past price trend and the promotion indicator. The values $`d_{t-\Delta-1}, d_{t-\Delta}, d_{t-\Delta+1}, ..., d_{t-1}`$ are the z-scored logarithmic values of the past $`\Delta`$ days. We include the one-hot vectors for week of year and month of year as $`𝒉^w`$ and $`𝒉^m`$.
 
 #### 3.2.3 Target
 
@@ -597,11 +597,11 @@ The procedure for generating targets is described in the following algorithm:
 
 2.  $`\ell_{t + r} \gets \sim L`$
 
-3.  $`y_t \gets \boldsymbol{d}[t + \ell_t : t + r + \ell_{t + r}]`$ — *The cumulative demand until the next order arrival*
+3.  $`y_t \gets 𝒅[t + \ell_t : t + r + \ell_{t + r}]`$ — *The cumulative demand until the next order arrival*
 
 Using this procedure, we can generate examples that closely approximate the expected demand to be fulfilled by an order placed at $`t`$. This sampling procedure also does not make any assumptions about neither the underlying probability distribution of demand nor the probability distribution of lead times, since we uniformly sample over the set of lead times, and use the real demand time series.
 
-To exemplify our target generating procedure, suppose we have a series of observed sales $`\boldsymbol{d} =`$ \[13, 13, 13, 12, 11, 12, 13, 14, 12, 14, 14, 12, 14, 12, 14, 14, 11\] from $`t=0`$ to $`t=16`$. Assume the series of observed lead times to be $`L =`$ \[1, 2, 2\], and our replenishment interval as $`r =`$ 7. Then, for an order placed at $`t=3`$, we could sample $`\ell_t =`$ 2 and $`\ell_{t + r} =`$ 1. That means that the order placed at $`t=3`$ will arrive at $`t=5`$ ($`t + \ell_t`$) and our next possible order is at $`t=12`$ ($`t + r`$). Hence, the order placed at $`t=12`$ arrives at $`t=13`$ ($`t + r + \ell_{t + r}`$). As such, the target for this prediction will be $`y_t =`$ 105, since we aggregate sales from $`t=5`$ to $`t=13`$, \[13, 14, 12, 14, 14, 12, 14, 12\].
+To exemplify our target generating procedure, suppose we have a series of observed sales $`𝒅 =`$ \[13, 13, 13, 12, 11, 12, 13, 14, 12, 14, 14, 12, 14, 12, 14, 14, 11\] from $`t=0`$ to $`t=16`$. Assume the series of observed lead times to be $`L =`$ \[1, 2, 2\], and our replenishment interval as $`r =`$ 7. Then, for an order placed at $`t=3`$, we could sample $`\ell_t =`$ 2 and $`\ell_{t + r} =`$ 1. That means that the order placed at $`t=3`$ will arrive at $`t=5`$ ($`t + \ell_t`$) and our next possible order is at $`t=12`$ ($`t + r`$). Hence, the order placed at $`t=12`$ arrives at $`t=13`$ ($`t + r + \ell_{t + r}`$). As such, the target for this prediction will be $`y_t =`$ 105, since we aggregate sales from $`t=5`$ to $`t=13`$, \[13, 14, 12, 14, 14, 12, 14, 12\].
 
 With this target, we can train a neural network using the loss function described in Equation 2.6, minimizing the quantile forecast error for the convolution of demand ($`D`$) and lead times ($`L`$) distributions.
 
